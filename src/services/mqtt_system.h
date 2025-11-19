@@ -43,7 +43,7 @@
 #endif
 
 #ifndef CONFIG_MQTT_BROKER_URI
-#define CONFIG_MQTT_BROKER_URI "mqtt://broker.hivemq.com"
+#define CONFIG_MQTT_BROKER_URI "mqtt://10.0.2.2:1883"
 #endif
 
 #ifndef CONFIG_MQTT_CLIENT_ID
