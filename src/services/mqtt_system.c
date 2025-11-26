@@ -140,6 +140,10 @@ esp_err_t mqtt_system_init(void)
     ESP_LOGI(TAG, "  Estatisticas inicializadas");
 
     /* Fase 2: WiFi */
+#ifdef CONFIG_QEMU_MODE
+    ESP_LOGW(TAG, "FASE 2: MODO QEMU - WiFi desabilitado");
+    ESP_LOGW(TAG, "  Executando em emulacao, funcionalidades de rede limitadas");
+#else
     ESP_LOGI(TAG, "FASE 2: Configurando WiFi...");
 
     ret = init_wifi();
@@ -155,8 +159,12 @@ esp_err_t mqtt_system_init(void)
         ESP_LOGE(TAG, "Timeout aguardando conexão WiFi");
         return ret;
     }
+#endif
 
     /* Fase 3: MQTT */
+#ifdef CONFIG_QEMU_MODE
+    ESP_LOGW(TAG, "FASE 3: MODO QEMU - MQTT desabilitado");
+#else
     ESP_LOGI(TAG, "FASE 3: Inicializando MQTT...");
 
     ret = init_mqtt();
@@ -171,6 +179,7 @@ esp_err_t mqtt_system_init(void)
     {
         ESP_LOGW(TAG, "Timeout MQTT - continuando em modo degradado");
     }
+#endif
 
     /* Fase 4: Tasks */
     ESP_LOGI(TAG, "FASE 4: Criando tasks da aplicacao...");
@@ -450,7 +459,11 @@ esp_err_t mqtt_get_health_status(health_status_t *health)
     health->uptime_sec = esp_timer_get_time() / 1000000ULL;
     health->mqtt_connected = s_mqtt_connected;
 
+#ifndef CONFIG_QEMU_MODE
     esp_wifi_sta_get_rssi(&health->wifi_rssi);
+#else
+    health->wifi_rssi = -127; // Valor inválido para indicar modo QEMU
+#endif
 
     return ESP_OK;
 }
@@ -615,6 +628,7 @@ static esp_err_t create_tasks(void)
     }
     ESP_LOGI(TAG, "  Task de health criada");
 
+#ifndef CONFIG_QEMU_MODE
     ret = xTaskCreate(wifi_watchdog_task, "WiFiWatchdog",
                       2048, NULL, 4, &s_task_wifi_watchdog);
     if (ret != pdPASS)
@@ -623,6 +637,9 @@ static esp_err_t create_tasks(void)
         return ESP_FAIL;
     }
     ESP_LOGI(TAG, "  Task de watchdog criada");
+#else
+    ESP_LOGI(TAG, "  Task de watchdog ignorada (modo QEMU)");
+#endif
 
     return ESP_OK;
 }
