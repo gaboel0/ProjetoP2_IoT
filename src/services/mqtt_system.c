@@ -755,7 +755,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base,
         s_mqtt_connected = true;
 
         mqtt_subscribe_topic("/casa/externo/luminosidade", 1);
-        mqtt_subscribe_topic("/casa/externo/temperatura", 1);
+        mqtt_subscribe_topic("/casa/sala/temperatura", 1);
         break;
 
     case MQTT_EVENT_DISCONNECTED:
@@ -790,7 +790,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base,
                 ESP_LOGI(TAG, "Luminosidade: %d, Luzes APAGADAS", luminosity);
             }
         }
-        else if (strcmp(topic, "/casa/externo/temperatura") == 0)
+        else if (strcmp(topic, "/casa/sala/temperatura") == 0)
         {
             int temperature = atoi(data);
             if (temperature > 23)

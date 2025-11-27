@@ -34,7 +34,7 @@ void sensor_simulate_task(void *pvParameters)
             // Simula e publica temperatura (-3 a 45)
             int temperature = (esp_random() % 49) - 3;
             snprintf(buffer, sizeof(buffer), "%d", temperature);
-            mqtt_publish_data("/casa/externo/temperatura", buffer, 0, 1, false);
+            mqtt_publish_data("/casa/sala/temperatura", buffer, 0, 1, false);
 
             ESP_LOGI(TAG, "Sensores simulados: Luminosidade=%d, Temperatura=%d°C", luminosity, temperature);
         }

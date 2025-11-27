@@ -32,7 +32,8 @@
 #endif
 
 #ifndef CONFIG_MQTT_BROKER_URI
-#define CONFIG_MQTT_BROKER_URI "mqtt://192.168.0.1:1883"
+// nao lembro a rota certa 
+#define CONFIG_MQTT_BROKER_URI "mqtt://192.168.137.1:1883"
 #endif
 
 #ifndef CONFIG_MQTT_CLIENT_ID
@@ -52,7 +53,7 @@
 #define MQTT_BUFFER_SIZE 2048				 ///< Tamanho do buffer MQTT
 #define MQTT_TIMEOUT_MS 10000				 ///< Timeout de operações MQTT
 #define WIFI_MAX_RETRY 5					 ///< Tentativas de reconexão WiFi
-#define TELEMETRY_INTERVAL_MS 10000		 ///< Intervalo de telemetria
+#define TELEMETRY_INTERVAL_MS 1000		 ///< Intervalo de telemetria
 #define HEALTH_CHECK_INTERVAL_MS 60000	 ///< Intervalo de health check
 #define WIFI_WATCHDOG_INTERVAL_MS 30000 ///< Intervalo de verificação WiFi
 
